@@ -10,7 +10,7 @@ Router.post("/pin", async (req, res) => {
     res.status(400).json(err);
   }
 });
-Router.get("/pin", async (req, res) => {
+Router.get("/pins", async (req, res) => {
   const foundPins = await Pin.find({});
   try {
     res.status(200).json(foundPins);
