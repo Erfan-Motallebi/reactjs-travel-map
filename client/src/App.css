@@ -1,4 +1,26 @@
-/* .map {
-  width: 100vw;
-  height: 100vh;
-} */
+:root {
+  --marker-color: #046582;
+}
+
+.icon {
+  color: var(--marker-color);
+  font-size: 3rem;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+  justify-content: space-between;
+  width: 170px;
+  background: rgb(101, 186, 214);
+  box-shadow: 0 0 20px 20px rgb(106, 181, 206);
+}
+
+.star {
+  color: rgb(221, 158, 0);
+}
+hr {
+  width: 90%;
+}
