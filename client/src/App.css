@@ -19,3 +19,11 @@
 hr {
   width: 90%;
 }
+
+.form-control {
+  width: 250px;
+  height: 300px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}

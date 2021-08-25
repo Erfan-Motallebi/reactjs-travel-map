@@ -19,6 +19,10 @@ const pinSchema = new mongoose.Schema(
       require: true,
       max: 50,
     },
+    rating: {
+      type: Number,
+      require: true,
+    },
     lat: {
       type: mongoose.SchemaTypes.Number,
       require: true,

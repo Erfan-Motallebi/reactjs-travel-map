@@ -1,12 +1,23 @@
 // LIBRARIES:
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import RoomRoundedIcon from "@material-ui/icons/RoomRounded";
 import Star from "@material-ui/icons/Star";
 import axios from "axios";
 import { format } from "timeago.js";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles/makeStyles";
+import {
+  FormControl,
+  TextField,
+  InputAdornment,
+  Button,
+} from "@material-ui/core";
+import {
+  AccountCircle,
+  Title,
+  StarOutline,
+  Description,
+  Send,
+} from "@material-ui/icons";
 
 // FILES:
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -16,7 +27,9 @@ function App() {
   const [pins, setPins] = useState([]);
   const [currentPinId, setCurrentPinId] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
+  const [newPlaceInfo, setNewPlaceInfo] = useState({});
   const [currentUser, setCurrentUser] = useState("Eric");
+
   const [viewport, setViewport] = useState({
     width: "100vw",
     height: "100vh",
@@ -57,6 +70,11 @@ function App() {
       long,
     });
   };
+
+  const formSubmitHandle = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <ReactMapGL
       {...viewport}
@@ -82,6 +100,7 @@ function App() {
                   style={{
                     fontSize: viewport.zoom * 6,
                     color: username === currentUser ? "red" : "purple",
+                    cursor: "pointer",
                   }}
                 />
               </Marker>
@@ -141,28 +160,111 @@ function App() {
           )
         )}
       {newPlace && (
-        <Fragment>
-          <Popup
-            latitude={newPlace.lat}
-            longitude={newPlace.long}
-            closeButton={true}
-            closeOnClick={false}
-            anchor="right"
-            onClose={() => setNewPlace(null)}
-          >
-            Hello new place
-          </Popup>
-          {/* <form>
+        <Popup
+          latitude={newPlace.lat}
+          longitude={newPlace.long}
+          closeButton={true}
+          closeOnClick={false}
+          anchor="right"
+          onClose={() => setNewPlace(null)}
+        >
+          <FormControl className="form-control" onSubmit={formSubmitHandle}>
             <div>
               <TextField
-                id="standard-textarea"
-                label="Multiline Placeholder"
-                placeholder="Placeholder"
-                multiline
+                onChange={(e) =>
+                  setNewPlaceInfo({ ...newPlaceInfo, username: e.target.value })
+                }
+                label="Username"
+                InputLabelProps={{
+                  style: {
+                    color: "#2D46B9",
+                    fontWeight: 700,
+                    fontSize: "1.1rem",
+                  },
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="end">
+                      <AccountCircle />
+                    </InputAdornment>
+                  ),
+                }}
               />
             </div>
-          </form> */}
-        </Fragment>
+            <div>
+              <TextField
+                label="Title"
+                onChange={(e) =>
+                  setNewPlaceInfo({ ...newPlaceInfo, title: e.target.value })
+                }
+                InputLabelProps={{
+                  style: {
+                    color: "#2D46B9",
+                    fontWeight: 700,
+                    fontSize: "1.1rem",
+                  },
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="end">
+                      <Title />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </div>
+            <div>
+              <TextField
+                label="Description"
+                onChange={(e) =>
+                  setNewPlaceInfo({
+                    ...newPlaceInfo,
+                    description: e.target.value,
+                  })
+                }
+                InputLabelProps={{
+                  style: {
+                    color: "#2D46B9",
+                    fontWeight: 700,
+                    fontSize: "1.1rem",
+                  },
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="end">
+                      <Description />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </div>
+            <div>
+              <TextField
+                label="Rating"
+                onChange={(e) =>
+                  setNewPlaceInfo({ ...newPlaceInfo, rating: e.target.value })
+                }
+                InputLabelProps={{
+                  style: {
+                    color: "#2D46B9",
+                    fontWeight: 700,
+                    fontSize: "1.1rem",
+                  },
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="end">
+                      <StarOutline />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </div>
+            <Button variant="contained" color="primary" startIcon={<Send />}>
+              Submit
+            </Button>
+          </FormControl>
+        </Popup>
       )}
     </ReactMapGL>
   );
