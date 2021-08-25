@@ -1,5 +1,5 @@
 // LIBRARIES:
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import RoomRoundedIcon from "@material-ui/icons/RoomRounded";
 import Star from "@material-ui/icons/Star";
@@ -12,7 +12,7 @@ import "./App.css";
 
 function App() {
   const [pins, setPins] = useState([]);
-  const [showPopup, togglePopup] = useState(false);
+  const [currentPinId, setCurrentPinId] = useState(null);
   const [viewport, setViewport] = useState({
     width: "100vw",
     height: "100vh",
@@ -37,13 +37,6 @@ function App() {
     fetchedPins();
   }, []);
 
-  const togglePopupFunc = (pinId) => {
-    pins.filter((pin) => {
-      if (pin._id === pinId) togglePopup(true);
-      return pin;
-    });
-  };
-
   return (
     <ReactMapGL
       {...viewport}
@@ -53,8 +46,8 @@ function App() {
     >
       {pins &&
         pins.map(
-          ({ lat, long, title, username, description, createdAt, _id }) => (
-            <div key={_id}>
+          ({ lat, long, title, username, description, createdAt, _id: id }) => (
+            <div key={id}>
               <Marker
                 latitude={lat}
                 longitude={long}
@@ -63,32 +56,38 @@ function App() {
               >
                 <RoomRoundedIcon
                   className="icon"
-                  onClick={togglePopupFunc.bind(null, _id)}
+                  onClick={setCurrentPinId.bind(this, id)}
                   style={{ fontSize: viewport.zoom * 6 }}
                 />
               </Marker>
-              {showPopup && (
+              {id === currentPinId && (
                 <Popup
                   latitude={lat}
                   longitude={long}
                   closeButton={true}
                   closeOnClick={false}
                   anchor="right"
-                  onClose={() => togglePopup(false)}
+                  onClose={() => setCurrentPinId(null)}
                 >
                   <div className="label">
                     <label>
-                      <strong>Place:</strong>
+                      <span>
+                        <strong>Place:</strong>
+                      </span>
                       <hr />
                       {title}
                     </label>
                     <label>
-                      <strong>Description: </strong>
+                      <span>
+                        <strong>Description: </strong>
+                      </span>
                       <hr />
                       {description}
                     </label>
                     <label>
-                      <strong>Rating</strong>
+                      <span>
+                        <strong>Rating</strong>
+                      </span>
                       <hr />
                       <Star className="star" />
                       <Star className="star" />
@@ -97,12 +96,16 @@ function App() {
                       <Star className="star" />
                     </label>
                     <label>
-                      <strong>Owner:</strong>
+                      <span>
+                        <strong>Owner:</strong>
+                      </span>
                       <hr />
                       Created by <b>{username}</b>
                     </label>
                     <label>
-                      <strong>Date:</strong>
+                      <span>
+                        <strong>Date:</strong>
+                      </span>
                       <hr />
                       {format(createdAt)}
                     </label>

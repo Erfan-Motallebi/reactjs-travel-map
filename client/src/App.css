@@ -1,5 +1,6 @@
 :root {
   --marker-color: #046582;
+  --label--color: #f037a5;
 }
 
 .icon {
@@ -13,10 +14,10 @@
   gap: 20px;
   justify-content: space-between;
   width: 250px;
-  background: lightblue;
-  box-shadow: 0 0 20px 30px lightblue;
 }
-
+.label span {
+  color: var(--label--color);
+}
 .star {
   color: rgb(221, 158, 0);
 }
