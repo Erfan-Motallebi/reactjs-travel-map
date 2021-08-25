@@ -1,10 +1,12 @@
 // LIBRARIES:
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import RoomRoundedIcon from "@material-ui/icons/RoomRounded";
 import Star from "@material-ui/icons/Star";
 import axios from "axios";
 import { format } from "timeago.js";
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles/makeStyles";
 
 // FILES:
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -13,6 +15,8 @@ import "./App.css";
 function App() {
   const [pins, setPins] = useState([]);
   const [currentPinId, setCurrentPinId] = useState(null);
+  const [newPlace, setNewPlace] = useState(null);
+  const [currentUser, setCurrentUser] = useState("Eric");
   const [viewport, setViewport] = useState({
     width: "100vw",
     height: "100vh",
@@ -37,12 +41,30 @@ function App() {
     fetchedPins();
   }, []);
 
+  const markerHandleClick = (id, lat, long) => {
+    setCurrentPinId(id);
+    setViewport({
+      ...viewport,
+      latitude: lat,
+      longitude: long,
+    });
+  };
+
+  const handleDoubleClick = (e) => {
+    const [long, lat] = e.lngLat;
+    setNewPlace({
+      lat,
+      long,
+    });
+  };
   return (
     <ReactMapGL
       {...viewport}
       mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
       onViewportChange={(nextViewport) => setViewport(nextViewport)}
       mapStyle="mapbox://styles/erfanfulldevs/ckso9ue046glh18p809pn3avo"
+      onDblClick={handleDoubleClick}
+      transitionDuration="400"
     >
       {pins &&
         pins.map(
@@ -56,8 +78,11 @@ function App() {
               >
                 <RoomRoundedIcon
                   className="icon"
-                  onClick={setCurrentPinId.bind(this, id)}
-                  style={{ fontSize: viewport.zoom * 6 }}
+                  onClick={() => markerHandleClick(id, lat, long)}
+                  style={{
+                    fontSize: viewport.zoom * 6,
+                    color: username === currentUser ? "red" : "purple",
+                  }}
                 />
               </Marker>
               {id === currentPinId && (
@@ -115,6 +140,30 @@ function App() {
             </div>
           )
         )}
+      {newPlace && (
+        <Fragment>
+          <Popup
+            latitude={newPlace.lat}
+            longitude={newPlace.long}
+            closeButton={true}
+            closeOnClick={false}
+            anchor="right"
+            onClose={() => setNewPlace(null)}
+          >
+            Hello new place
+          </Popup>
+          {/* <form>
+            <div>
+              <TextField
+                id="standard-textarea"
+                label="Multiline Placeholder"
+                placeholder="Placeholder"
+                multiline
+              />
+            </div>
+          </form> */}
+        </Fragment>
+      )}
     </ReactMapGL>
   );
 }
