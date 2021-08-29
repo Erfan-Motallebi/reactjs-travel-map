@@ -6,10 +6,10 @@ import Star from "@material-ui/icons/Star";
 import axios from "axios";
 import { format } from "timeago.js";
 import {
-  FormControl,
   TextField,
   InputAdornment,
   Button,
+  FormControl,
 } from "@material-ui/core";
 import {
   AccountCircle,
@@ -52,7 +52,7 @@ function App() {
       }
     };
     fetchedPins();
-  }, []);
+  }, [pins]);
 
   const markerHandleClick = (id, lat, long) => {
     setCurrentPinId(id);
@@ -73,6 +73,13 @@ function App() {
 
   const formSubmitHandle = (e) => {
     e.preventDefault();
+    console.log(newPlace, newPlaceInfo);
+    const postPinResult = axios.post("/pin", {
+      ...newPlaceInfo,
+      lat: newPlace.lat,
+      long: newPlace.long,
+    });
+    console.log(postPinResult.data);
   };
 
   return (
@@ -86,7 +93,16 @@ function App() {
     >
       {pins &&
         pins.map(
-          ({ lat, long, title, username, description, createdAt, _id: id }) => (
+          ({
+            lat,
+            long,
+            title,
+            username,
+            description,
+            createdAt,
+            rating,
+            _id: id,
+          }) => (
             <div key={id}>
               <Marker
                 latitude={lat}
@@ -133,11 +149,7 @@ function App() {
                         <strong>Rating</strong>
                       </span>
                       <hr />
-                      <Star className="star" />
-                      <Star className="star" />
-                      <Star className="star" />
-                      <Star className="star" />
-                      <Star className="star" />
+                      {rating === 1}
                     </label>
                     <label>
                       <span>
@@ -168,7 +180,10 @@ function App() {
           anchor="right"
           onClose={() => setNewPlace(null)}
         >
-          <FormControl className="form-control" onSubmit={formSubmitHandle}>
+          <FormControl
+            className="form-control"
+            onSubmit={(e) => formSubmitHandle(e)}
+          >
             <div>
               <TextField
                 onChange={(e) =>
@@ -260,7 +275,12 @@ function App() {
                 }}
               />
             </div>
-            <Button variant="contained" color="primary" startIcon={<Send />}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              startIcon={<Send />}
+            >
               Submit
             </Button>
           </FormControl>
