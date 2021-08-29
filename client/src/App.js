@@ -5,12 +5,7 @@ import RoomRoundedIcon from "@material-ui/icons/RoomRounded";
 import Star from "@material-ui/icons/Star";
 import axios from "axios";
 import { format } from "timeago.js";
-import {
-  TextField,
-  InputAdornment,
-  Button,
-  FormControl,
-} from "@material-ui/core";
+import { TextField, InputAdornment, Button } from "@material-ui/core";
 import {
   AccountCircle,
   Title,
@@ -73,13 +68,11 @@ function App() {
 
   const formSubmitHandle = (e) => {
     e.preventDefault();
-    console.log(newPlace, newPlaceInfo);
-    const postPinResult = axios.post("/pin", {
+    axios.post("/pin", {
       ...newPlaceInfo,
       lat: newPlace.lat,
       long: newPlace.long,
     });
-    console.log(postPinResult.data);
   };
 
   return (
@@ -149,7 +142,35 @@ function App() {
                         <strong>Rating</strong>
                       </span>
                       <hr />
-                      {rating === 1}
+                      {rating === 1 ? (
+                        <Star className="star" />
+                      ) : rating === 2 ? (
+                        <>
+                          <Star className="star" />
+                          <Star className="star" />
+                        </>
+                      ) : rating === 3 ? (
+                        <>
+                          <Star className="star" />
+                          <Star className="star" />
+                          <Star className="star" />
+                        </>
+                      ) : rating === 4 ? (
+                        <>
+                          <Star className="star" />
+                          <Star className="star" />
+                          <Star className="star" />
+                          <Star className="star" />
+                        </>
+                      ) : (
+                        <>
+                          <Star className="star" />
+                          <Star className="star" />
+                          <Star className="star" />
+                          <Star className="star" />
+                          <Star className="star" />
+                        </>
+                      )}
                     </label>
                     <label>
                       <span>
@@ -180,10 +201,7 @@ function App() {
           anchor="right"
           onClose={() => setNewPlace(null)}
         >
-          <FormControl
-            className="form-control"
-            onSubmit={(e) => formSubmitHandle(e)}
-          >
+          <form className="form-control" onSubmit={formSubmitHandle}>
             <div>
               <TextField
                 onChange={(e) =>
@@ -283,7 +301,7 @@ function App() {
             >
               Submit
             </Button>
-          </FormControl>
+          </form>
         </Popup>
       )}
     </ReactMapGL>
