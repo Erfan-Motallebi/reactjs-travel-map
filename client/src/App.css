@@ -25,5 +25,46 @@ hr {
   height: 300px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-direction: column;
+}
+
+.textareaMat {
+  width: 223px;
+}
+
+.btn {
+  width: 230px;
+}
+
+.nSelect {
+  width: 233px;
+  border: 2px solid lightgray;
+  border-bottom-style: none;
+  border-radius: 5px;
+  padding: 5px;
+  font-weight: 500;
+}
+
+.modal-container {
+  background: white;
+  width: 300px;
+  height: 400px;
+  padding: 20px;
+  border-radius: 0.2rem;
+  margin: 240px auto;
+  position: relative;
+  z-index: 999;
+}
+.form-register {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.roomIcon {
+  position: relative;
+  inset: -10px 130px;
+  font-size: 3rem !important;
 }
