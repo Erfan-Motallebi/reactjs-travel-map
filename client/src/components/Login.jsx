@@ -1,10 +1,10 @@
 import { TextField, Button } from "@material-ui/core";
-import React, { useState } from "react";
+import React from "react";
 import { Room as RoomIcon, CloseSharp } from "@material-ui/icons";
 import { useForm } from "react-hook-form";
 
 function Login({ loginCb, setOpen }) {
-  const { register, handleSubmit, watch, formState } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const registerHandler = (data) => {
     loginCb(data);
@@ -19,14 +19,18 @@ function Login({ loginCb, setOpen }) {
           label="Username"
           id="username"
           variant="outlined"
-          {...register("username")}
+          {...register("username", {
+            required: true,
+            minLength: 5,
+            pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/gim,
+          })}
         />
         <TextField
           label="Password"
           id="password"
           type="password"
           variant="outlined"
-          {...register("password")}
+          {...register("password", { required: true, minLength: 6 })}
         />
         <Button
           style={{

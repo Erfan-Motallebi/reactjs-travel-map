@@ -1,47 +1,46 @@
 import { TextField, Button } from "@material-ui/core";
-import React, { useState } from "react";
+import React from "react";
 import { Room as RoomIcon, CloseSharp } from "@material-ui/icons";
+import { useForm } from "react-hook-form";
 
 function Register({ registerHandlerCb, setOpen }) {
-  const [registered, setRegistered] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-  const registerHandler = (e) => {
-    e.preventDefault();
-    registerHandlerCb(registered);
+  const { register, handleSubmit } = useForm();
+  const registerHandler = (data) => {
+    registerHandlerCb(data);
   };
 
   return (
     <div className="modal-container">
       <RoomIcon className="roomIcon" />
       <CloseSharp className="btn-close" onClick={setOpen.bind(this, false)} />
-      <form className="form-register" onSubmit={registerHandler}>
+      <form className="form-register" onSubmit={handleSubmit(registerHandler)}>
         <TextField
           label="Username"
           id="username"
           variant="outlined"
-          onChange={(e) =>
-            setRegistered({ ...registered, username: e.target.value })
-          }
+          {...register("username", {
+            required: true,
+            minLength: 3,
+            maxLength: 30,
+            pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/gim,
+          })}
         />
         <TextField
           label="Email"
           id="email"
           variant="outlined"
-          onChange={(e) =>
-            setRegistered({ ...registered, email: e.target.value })
-          }
+          {...register("email", {
+            required: true,
+            maxLength: 50,
+            pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+          })}
         />
         <TextField
           label="Password"
           id="password"
           type="password"
           variant="outlined"
-          onChange={(e) =>
-            setRegistered({ ...registered, password: e.target.value })
-          }
+          {...register("password", { required: true, minLength: 6 })}
         />
         <Button
           style={{
