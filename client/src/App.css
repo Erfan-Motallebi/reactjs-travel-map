@@ -35,6 +35,7 @@ hr {
 
 .btn {
   width: 230px;
+  cursor: pointer;
 }
 
 .nSelect {
@@ -67,4 +68,13 @@ hr {
   position: relative;
   inset: -10px 130px;
   font-size: 3rem !important;
+}
+
+.btn-close {
+  font-size: 2rem !important;
+  position: relative;
+  top: -30px;
+  right: -230px;
+  color: red;
+  cursor: pointer;
 }

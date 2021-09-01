@@ -1,7 +1,8 @@
 import { TextField, Button } from "@material-ui/core";
 import React, { useState } from "react";
-import RoomIcon from "@material-ui/icons/Room";
-function Register({ registerHandlerCb }) {
+import { Room as RoomIcon, CloseSharp } from "@material-ui/icons";
+
+function Register({ registerHandlerCb, setOpen }) {
   const [registered, setRegistered] = useState({
     username: "",
     email: "",
@@ -15,6 +16,7 @@ function Register({ registerHandlerCb }) {
   return (
     <div className="modal-container">
       <RoomIcon className="roomIcon" />
+      <CloseSharp className="btn-close" onClick={setOpen.bind(this, false)} />
       <form className="form-register" onSubmit={registerHandler}>
         <TextField
           label="Username"

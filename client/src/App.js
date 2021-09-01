@@ -1,5 +1,5 @@
 // LIBRARIES:
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useCallback } from "react";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import RoomRoundedIcon from "@material-ui/icons/RoomRounded";
 import axios from "axios";
@@ -54,7 +54,7 @@ function App() {
   useEffect(() => {
     const fetchedPins = async () => {
       try {
-        const allPins = await axios.get("/pins", {
+        const allPins = await axios.get("api/pins", {
           headers: {
             "Content-Type": "application/json",
           },
@@ -86,17 +86,22 @@ function App() {
 
   const formSubmitHandle = (e) => {
     e.preventDefault();
-    axios.post("/pin", {
+    axios.post("api/pin", {
       ...newPlaceInfo,
       lat: newPlace.lat,
       long: newPlace.long,
     });
   };
 
-  const registerHandlerCb = (registerValues) => {
-    setOpen();
-    console.log(registerValues);
-  };
+  const registerHandlerCb = useCallback(async (registerValues) => {
+    axios.post("user/register", registerValues, {
+      headers: { "Content-Type": "application/json" },
+    });
+    setCurrentUser((oldUsers) => {
+      return [...oldUsers, registerValues];
+    });
+    setOpen(false);
+  }, []);
 
   return (
     <Fragment>
