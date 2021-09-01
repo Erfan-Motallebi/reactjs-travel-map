@@ -2,36 +2,27 @@ import { TextField, Button } from "@material-ui/core";
 import React, { useState } from "react";
 import { Room as RoomIcon, CloseSharp } from "@material-ui/icons";
 
-function Register({ registerHandlerCb, setOpen }) {
-  const [registered, setRegistered] = useState({
+function Login({ loginCb, setOpen }) {
+  const [userLogin, setUserLogin] = useState({
     username: "",
-    email: "",
     password: "",
   });
   const registerHandler = (e) => {
     e.preventDefault();
-    registerHandlerCb(registered);
+    loginCb(userLogin);
   };
 
   return (
-    <div className="modal-container">
+    <div className="modal-container-login">
       <RoomIcon className="roomIcon" />
       <CloseSharp className="btn-close" onClick={setOpen.bind(this, false)} />
-      <form className="form-register" onSubmit={registerHandler}>
+      <form className="form-login" onSubmit={registerHandler}>
         <TextField
           label="Username"
           id="username"
           variant="outlined"
           onChange={(e) =>
-            setRegistered({ ...registered, username: e.target.value })
-          }
-        />
-        <TextField
-          label="Email"
-          id="email"
-          variant="outlined"
-          onChange={(e) =>
-            setRegistered({ ...registered, email: e.target.value })
+            setUserLogin({ ...userLogin, username: e.target.value })
           }
         />
         <TextField
@@ -40,7 +31,7 @@ function Register({ registerHandlerCb, setOpen }) {
           type="password"
           variant="outlined"
           onChange={(e) =>
-            setRegistered({ ...registered, password: e.target.value })
+            setUserLogin({ ...userLogin, password: e.target.value })
           }
         />
         <Button
@@ -48,13 +39,14 @@ function Register({ registerHandlerCb, setOpen }) {
             background: "lightblue",
             color: "darkblue",
             fontWeight: 600,
+            padding: "20px 0px 20px 0px",
           }}
           type="submit"
         >
-          Register
+          Login
         </Button>
       </form>
     </div>
   );
 }
-export default Register;
+export default Login;

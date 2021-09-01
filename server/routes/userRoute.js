@@ -1,7 +1,7 @@
 const Router = require("express").Router();
 const User = require("../models/user.model");
 const bcryptjs = require("bcryptjs");
-const _ = require("lodash");
+// const _ = require("lodash");
 
 Router.get("/login", async (req, res) => {
   // TODO: Find the specific User DONE:
@@ -15,10 +15,12 @@ Router.get("/login", async (req, res) => {
     try {
       await bcryptjs.compare(req.body.password, user.password);
 
-      res.status(200).json(_.omit(user, ["password"]));
+      res.status(200).json(user);
     } catch (error) {
       res.status(400).json({
-        result: "user/password is not correct. please try again",
+        error: {
+          msg: "User/password Not Right",
+        },
       });
     }
   } else {
@@ -26,7 +28,7 @@ Router.get("/login", async (req, res) => {
       success: false,
       result: [],
       error: {
-        model: "User Not Found",
+        msg: "User Not Found",
       },
     });
   }
@@ -43,7 +45,11 @@ Router.post("/register", async (req, res) => {
     const newUserResult = await newUser.save();
     res.status(200).json(newUserResult);
   } catch (error) {
-    res.status(400).json(error);
+    res.status(400).json({
+      error: {
+        msg: "Fields Required",
+      },
+    });
   }
 });
 
