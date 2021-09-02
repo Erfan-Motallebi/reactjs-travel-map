@@ -109,6 +109,12 @@ export default function TravelApp() {
           headers: { "Content-Type": "application/json" },
         });
         setOpenState({ ...openState, register: false });
+        toast.success(
+          <Flash duration={4000}>
+            <h5>You registered.</h5>
+          </Flash>,
+          { position: toast.POSITION.TOP_CENTER }
+        );
       } catch ({
         response: {
           data: { error },
