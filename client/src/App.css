@@ -61,7 +61,7 @@ hr {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 30px;
+  gap: 50px;
 }
 
 .roomIcon {
@@ -95,7 +95,7 @@ hr {
   flex-direction: column;
   justify-content: space-between;
   margin-top: 20px;
-  gap: 20px;
+  gap: 50px;
 }
 
 /* ToolTip CSS Extending */
