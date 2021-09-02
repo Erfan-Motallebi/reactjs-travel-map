@@ -1,14 +1,15 @@
 // LIBRARIES:
-import React, { useState, Fragment, useCallback } from "react";
+import React, { useState, Fragment, useCallback, useEffect } from "react";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import RoomRoundedIcon from "@material-ui/icons/RoomRounded";
 import axios from "axios";
 import Zoom from "react-reveal/Zoom";
 import Fade from "react-reveal/Fade";
+import Flash from "react-reveal/Flash";
 import Bounce from "react-reveal/Bounce";
 import { format } from "timeago.js";
 import { ToastContainer, toast } from "react-toastify";
-import { useQueryClient } from "react-query";
+import { useQueryClient, useQuery } from "react-query";
 
 import {
   TextField,
@@ -25,7 +26,6 @@ import { Star, Send } from "@material-ui/icons";
 // FILES:
 import Register from "./Register";
 import Login from "./Login";
-import { useQuery } from "react-query";
 import DeleteBtn from "./DeleteBtn";
 
 const useStyles = makeStyles({
@@ -55,7 +55,9 @@ export default function TravelApp() {
   const [newPlace, setNewPlace] = useState(null);
   const [newPlaceInfo, setNewPlaceInfo] = useState({});
   // eslint-disable-next-line no-unused-vars
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(localStorage.getItem("User"))
+  );
 
   const [viewport, setViewport] = useState({
     width: "100vw",
@@ -74,11 +76,19 @@ export default function TravelApp() {
   };
 
   const handleDoubleClick = (e) => {
-    const [long, lat] = e.lngLat;
-    setNewPlace({
-      lat,
-      long,
-    });
+    if (currentUser.username !== undefined) {
+      const [long, lat] = e.lngLat;
+      setNewPlace({
+        lat,
+        long,
+      });
+    }
+    toast.warn(
+      <Flash>
+        <h5>Permission denied.</h5>
+      </Flash>,
+      { position: toast.POSITION.TOP_CENTER }
+    );
   };
 
   const formSubmitHandle = async (e) => {
@@ -88,7 +98,8 @@ export default function TravelApp() {
       lat: newPlace.lat,
       long: newPlace.long,
     });
-    queryClient.setQueryData("allPins");
+    setNewPlace(null);
+    queryClient.invalidateQueries("allPins");
   };
 
   const registerHandlerCb = useCallback(
@@ -120,6 +131,7 @@ export default function TravelApp() {
         data: JSON.stringify(user),
       });
       setCurrentUser(await userInfo.data);
+
       setOpenState({ ...openState, login: false });
       toast.success(
         <Bounce>
@@ -146,6 +158,10 @@ export default function TravelApp() {
       { position: toast.POSITION.TOP_CENTER }
     );
   };
+
+  useEffect(() => {
+    localStorage.setItem("User", JSON.stringify(currentUser));
+  }, [currentUser]);
 
   return (
     <Fragment>
@@ -224,7 +240,7 @@ export default function TravelApp() {
               rating,
               _id: id,
             }) => (
-              <div key={id}>
+              <div key={id + Math.random(2)}>
                 <Marker
                   latitude={lat}
                   longitude={long}
@@ -288,7 +304,7 @@ export default function TravelApp() {
                         {format(createdAt)}
                       </label>
                     </div>
-                    <DeleteBtn pinId={id} />
+                    <DeleteBtn pinId={id} currentUser={currentUser} />
                   </Popup>
                 )}
               </div>

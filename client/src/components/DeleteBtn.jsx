@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@material-ui/core";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import Flash from "react-reveal/Flash";
@@ -12,9 +12,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 
-import { useQueryClient } from "react-query";
-
-const DeleteBtn = React.memo(({ pinId }) => {
+const DeleteBtn = React.memo(({ pinId, currentUser }) => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const mutation = useMutation(async (id) => {
@@ -29,7 +27,13 @@ const DeleteBtn = React.memo(({ pinId }) => {
   });
 
   const handleClickOpen = () => {
-    setOpen(true);
+    if (currentUser === JSON.parse(localStorage.getItem("User"))) setOpen(true);
+    toast.warn(
+      <Flash>
+        <h5>Permission denied.</h5>
+      </Flash>,
+      { position: toast.POSITION.TOP_CENTER }
+    );
   };
 
   const handleClose = () => {
@@ -45,7 +49,7 @@ const DeleteBtn = React.memo(({ pinId }) => {
   if (mutation.isError)
     return <h5>Something went wrong while being deleted</h5>;
   if (mutation.isSuccess) {
-    queryClient.setQueryData("allPins");
+    queryClient.invalidateQueries("allPins");
     toast.success(
       <Flash>
         <h5>successfully deleted.</h5>
