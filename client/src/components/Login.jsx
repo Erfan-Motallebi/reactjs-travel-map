@@ -26,7 +26,6 @@ function Login({ loginCb, setOpen }) {
           data-tip="Enter your username"
           data-type="warning"
           data-text-color="#373F51"
-          data-arrow-color="red"
           data-class="tooltip"
           label="Username"
           id="username"

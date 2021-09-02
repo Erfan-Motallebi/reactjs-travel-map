@@ -6,6 +6,7 @@ import axios from "axios";
 import Zoom from "react-reveal/Zoom";
 import Fade from "react-reveal/Fade";
 import { format } from "timeago.js";
+import { ToastContainer, toast } from "react-toastify";
 
 import {
   TextField,
@@ -103,29 +104,27 @@ export default function TravelApp() {
     [openState]
   );
 
-  const loginCb = useCallback(
-    async (user) => {
-      try {
-        const userInfo = await axios.request({
-          url: "user/login",
-          method: "POST",
-          headers: {
-            "Content-Type": "Application/json",
-          },
-          data: JSON.stringify(user),
-        });
-        setCurrentUser([...currentUser, await userInfo.data]);
-        setOpenState({ ...openState, login: false });
-      } catch ({
-        response: {
-          data: { error },
+  const loginCb = useCallback(async (user) => {
+    try {
+      const userInfo = await axios.request({
+        url: "user/login",
+        method: "POST",
+        headers: {
+          "Content-Type": "Application/json",
         },
-      }) {
-        setError({ type: "LoginError", errorMessage: error.msg });
-      }
-    },
-    [currentUser, openState]
-  );
+        data: JSON.stringify(user),
+      });
+      setCurrentUser([...currentUser, await userInfo.data]);
+      setOpenState({ ...openState, login: false });
+    } catch ({
+      response: {
+        data: { error },
+      },
+    }) {
+      setError({ type: "LoginError", errorMessage: error.msg });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Fragment>
@@ -381,6 +380,7 @@ export default function TravelApp() {
           </Fade>
         )}
       </ReactMapGL>
+      <ToastContainer autoClose={3000} />
     </Fragment>
   );
 }
