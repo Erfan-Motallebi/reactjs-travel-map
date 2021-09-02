@@ -4,6 +4,7 @@ import { Room as RoomIcon, CloseSharp } from "@material-ui/icons";
 import { useForm } from "react-hook-form";
 import notify from "./utils/notify";
 import { ToastContainer } from "react-toastify";
+import ReactTooltip from "react-tooltip";
 
 function Login({ loginCb, setOpen }) {
   const {
@@ -22,6 +23,11 @@ function Login({ loginCb, setOpen }) {
       <CloseSharp className="btn-close" onClick={setOpen.bind(this, false)} />
       <form className="form-login" onSubmit={handleSubmit(registerHandler)}>
         <TextField
+          data-tip="Enter your username"
+          data-type="warning"
+          data-text-color="#373F51"
+          data-arrow-color="red"
+          data-class="tooltip"
           label="Username"
           id="username"
           variant="outlined"
@@ -35,6 +41,11 @@ function Login({ loginCb, setOpen }) {
         {errors.username?.type === "minLength" &&
           notify("username", "minLength")}
         <TextField
+          data-tip="Enter your password"
+          data-type="warning"
+          data-text-color="#373F51"
+          data-class="tooltip"
+          data-arrow-color="red"
           label="Password"
           id="password"
           type="password"
@@ -56,6 +67,8 @@ function Login({ loginCb, setOpen }) {
           Login
         </Button>
       </form>
+      <ReactTooltip delayUpdate={2000} delayShow={500} border={true} />
+      <ReactTooltip delayUpdate={2000} delayShow={500} border={true} />
       <ToastContainer autoClose={3000} />
     </div>
   );

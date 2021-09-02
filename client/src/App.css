@@ -97,3 +97,12 @@ hr {
   margin-top: 20px;
   gap: 20px;
 }
+
+/* ToolTip CSS Extending */
+
+.tooltip {
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+  color: rgb(219, 56, 56) !important;
+  border: solid 1px rgb(199, 60, 60) !important;
+}

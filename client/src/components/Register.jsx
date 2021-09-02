@@ -4,6 +4,7 @@ import { Room as RoomIcon, CloseSharp } from "@material-ui/icons";
 import { useForm } from "react-hook-form";
 import { ToastContainer } from "react-toastify";
 import notify from "./utils/notify";
+import ReactTooltip from "react-tooltip";
 
 function Register({ registerHandlerCb, setOpen }) {
   const {
@@ -22,6 +23,11 @@ function Register({ registerHandlerCb, setOpen }) {
       <CloseSharp className="btn-close" onClick={setOpen.bind(this, false)} />
       <form className="form-register" onSubmit={handleSubmit(registerHandler)}>
         <TextField
+          data-tip="Enter your username"
+          data-type="warning"
+          data-text-color="#373F51"
+          data-arrow-color="red"
+          data-class="tooltip"
           label="Username"
           id="username"
           variant="outlined"
@@ -39,6 +45,11 @@ function Register({ registerHandlerCb, setOpen }) {
         {errors.username?.type === "maxLength" &&
           notify("username", "maxLength")}
         <TextField
+          data-tip="Enter your email"
+          data-type="warning"
+          data-text-color="#373F51"
+          data-class="tooltip"
+          data-arrow-color="red"
           label="Email"
           id="email"
           variant="outlined"
@@ -53,6 +64,11 @@ function Register({ registerHandlerCb, setOpen }) {
         {errors.email?.type === "pattern" && notify("email", "pattern")}
 
         <TextField
+          data-tip="Enter your password"
+          data-type="warning"
+          data-text-color="#373F51"
+          data-class="tooltip"
+          data-arrow-color="red"
           label="Password"
           id="password"
           type="password"
@@ -72,6 +88,9 @@ function Register({ registerHandlerCb, setOpen }) {
           Register
         </Button>
       </form>
+      <ReactTooltip delayUpdate={2000} delayShow={500} border={true} />
+      <ReactTooltip delayUpdate={2000} delayShow={500} border={true} />
+      <ReactTooltip delayUpdate={2000} delayShow={500} border={true} />
       <ToastContainer autoClose={3000} />
     </div>
   );
