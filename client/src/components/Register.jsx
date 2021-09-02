@@ -2,7 +2,8 @@ import { TextField, Button } from "@material-ui/core";
 import React from "react";
 import { Room as RoomIcon, CloseSharp } from "@material-ui/icons";
 import { useForm } from "react-hook-form";
-import Flip from "react-reveal/Flip";
+import { ToastContainer } from "react-toastify";
+import notify from "./utils/notify";
 
 function Register({ registerHandlerCb, setOpen }) {
   const {
@@ -10,6 +11,7 @@ function Register({ registerHandlerCb, setOpen }) {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const registerHandler = (data) => {
     registerHandlerCb(data);
   };
@@ -25,34 +27,17 @@ function Register({ registerHandlerCb, setOpen }) {
           variant="outlined"
           {...register("username", {
             required: true,
-            minLength: 5,
+            minLength: 4,
             maxLength: 30,
             pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/gim,
           })}
         />
-        {errors.username?.type === "required" && (
-          <Flip>
-            <h5 style={{ color: "red" }}>Username is required</h5>
-            <Flip></Flip>
-          </Flip>
-        )}
-        {errors.username?.type === "minLength" && (
-          <Flip>
-            <h5 style={{ color: "red" }}>Username is more than 5 letters.</h5>
-          </Flip>
-        )}
-        {errors.username?.type === "Pattern" && (
-          <Flip>
-            <h5 style={{ color: "red" }}>Right pattern is required.</h5>
-          </Flip>
-        )}
-        {errors.username?.type === "maxLength" && (
-          <Flip>
-            <h5 style={{ color: "red" }}>
-              Maximum length is less than 30 letters.
-            </h5>
-          </Flip>
-        )}
+        {errors.username?.type === "required" && notify("username", "required")}
+        {errors.username?.type === "minLength" &&
+          notify("username", "minLength")}
+        {errors.username?.type === "pattern" && notify("username", "pattern")}
+        {errors.username?.type === "maxLength" &&
+          notify("username", "maxLength")}
         <TextField
           label="Email"
           id="email"
@@ -63,21 +48,9 @@ function Register({ registerHandlerCb, setOpen }) {
             pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g,
           })}
         />
-        {errors.email?.type === "required" && (
-          <Flip>
-            <h5>Email is required</h5>
-          </Flip>
-        )}
-        {errors.email?.type === "maxLength" && (
-          <Flip>
-            <h5>Maximum length is less than 50 letters.</h5>
-          </Flip>
-        )}
-        {errors.email?.type === "pattern" && (
-          <Flip>
-            <h5>Right pattern is required. please try again </h5>
-          </Flip>
-        )}
+        {errors.email?.type === "required" && notify("email", "required")}
+        {errors.email?.type === "maxLength" && notify("email", "maxLength")}
+        {errors.email?.type === "pattern" && notify("email", "pattern")}
 
         <TextField
           label="Password"
@@ -86,10 +59,8 @@ function Register({ registerHandlerCb, setOpen }) {
           variant="outlined"
           {...register("password", { required: true, minLength: 6 })}
         />
-        {errors.password?.type === "required" && <h5>Password is required</h5>}
-        {errors.password?.type === "minLength" && (
-          <h5>Minimum length is over 6 letters.</h5>
-        )}
+        {errors.password?.type === "required" && notify("password", "required")}
+        {errors.password?.type === "minLength" && notify("email", "minLength")}
         <Button
           style={{
             background: "lightblue",
@@ -101,6 +72,7 @@ function Register({ registerHandlerCb, setOpen }) {
           Register
         </Button>
       </form>
+      <ToastContainer />
     </div>
   );
 }

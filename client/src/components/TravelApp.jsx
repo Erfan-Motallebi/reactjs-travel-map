@@ -170,6 +170,7 @@ export default function TravelApp() {
           </Toolbar>
         </AppBar>
       </div>
+
       <ReactMapGL
         {...viewport}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}

@@ -26,7 +26,7 @@ function Login({ loginCb, setOpen }) {
           variant="outlined"
           {...register("username", {
             required: true,
-            minLength: 5,
+            minLength: 4,
             pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/gim,
           })}
         />
@@ -37,7 +37,7 @@ function Login({ loginCb, setOpen }) {
         )}
         {errors.username?.type === "minLength" && (
           <Flash>
-            <h5 style={{ color: "red" }}>Username is more than 6 letters.</h5>
+            <h5 style={{ color: "red" }}>Username is more than 4 letters.</h5>
           </Flash>
         )}
         <TextField

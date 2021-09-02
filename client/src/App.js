@@ -3,7 +3,7 @@ import TravelApp from "./components/TravelApp";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 // FILES:
-import "mapbox-gl/dist/mapbox-gl.css";
+import "react-toastify/dist/ReactToastify.min.css";
 import "./App.css";
 
 const clientQuery = new QueryClient();
