@@ -2,9 +2,14 @@ import { TextField, Button } from "@material-ui/core";
 import React from "react";
 import { Room as RoomIcon, CloseSharp } from "@material-ui/icons";
 import { useForm } from "react-hook-form";
+import Flash from "react-reveal/Flash";
 
 function Login({ loginCb, setOpen }) {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const registerHandler = (data) => {
     loginCb(data);
@@ -25,13 +30,33 @@ function Login({ loginCb, setOpen }) {
             pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/gim,
           })}
         />
+        {errors.username?.type === "required" && (
+          <Flash>
+            <h5 style={{ color: "red" }}>Username is required</h5>
+          </Flash>
+        )}
+        {errors.username?.type === "minLength" && (
+          <Flash>
+            <h5 style={{ color: "red" }}>Username is more than 6 letters.</h5>
+          </Flash>
+        )}
         <TextField
           label="Password"
           id="password"
           type="password"
           variant="outlined"
-          {...register("password", { required: true, minLength: 6 })}
+          {...register("password", { required: true, minLength: 5 })}
         />
+        {errors.password?.type === "required" && (
+          <Flash>
+            <h5 style={{ color: "red" }}>Password is required</h5>
+          </Flash>
+        )}
+        {errors.password?.type === "minLength" && (
+          <Flash>
+            <h5 style={{ color: "red" }}>Password is more than 6 letters</h5>
+          </Flash>
+        )}
         <Button
           style={{
             background: "lightblue",
