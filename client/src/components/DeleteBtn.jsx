@@ -12,6 +12,8 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 
+import once from "lodash.once";
+
 const DeleteBtn = React.memo(({ pinId, currentUser }) => {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -27,13 +29,20 @@ const DeleteBtn = React.memo(({ pinId, currentUser }) => {
   });
 
   const handleClickOpen = () => {
-    if (currentUser === JSON.parse(localStorage.getItem("User"))) setOpen(true);
-    toast.warn(
-      <Flash>
-        <h5>Permission denied.</h5>
-      </Flash>,
-      { position: toast.POSITION.TOP_CENTER }
-    );
+    if (currentUser === JSON.parse(localStorage.getItem("User"))) {
+      setOpen(true);
+    } else {
+      console.log("warned");
+      const deleteAuth = once(() => {
+        return toast.warn(
+          <Flash>
+            <h5>Please Log in and try again.</h5>
+          </Flash>,
+          { position: toast.POSITION.TOP_CENTER }
+        );
+      });
+      deleteAuth();
+    }
   };
 
   const handleClose = () => {

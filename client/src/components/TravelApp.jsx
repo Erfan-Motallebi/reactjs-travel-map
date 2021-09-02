@@ -144,7 +144,12 @@ export default function TravelApp() {
         data: { error },
       },
     }) {
-      setError({ type: "LoginError", errorMessage: error.msg });
+      toast.error(
+        <Flash>
+          <h4>User not found.</h4>
+        </Flash>,
+        { position: toast.POSITION.TOP_CENTER }
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -170,7 +175,7 @@ export default function TravelApp() {
           <Toolbar className={classes.toolBar}>
             <Typography variant="h5">React Travel App</Typography>
             <div style={{ flexBasic: 10 }}>
-              {currentUser.username ? (
+              {currentUser.username && currentUser.username !== null ? (
                 <Button
                   style={{
                     background: "red",
