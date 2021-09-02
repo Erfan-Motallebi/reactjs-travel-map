@@ -3,7 +3,7 @@ const User = require("../models/user.model");
 const bcryptjs = require("bcryptjs");
 // const _ = require("lodash");
 
-Router.get("/login", async (req, res) => {
+Router.post("/login", async (req, res) => {
   // TODO: Find the specific User DONE:
   const user = await User.findOne({
     username: { $eq: req.body.username },
