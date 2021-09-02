@@ -9,14 +9,14 @@ const notify = (field, type) => {
           <Flash delay={1000} duration={2000}>
             <h5 style={{ color: "red" }}>Username is required</h5>
           </Flash>,
-          { position: toast.POSITION.TOP_CENTER }
+          { position: toast.POSITION.BOTTOM_LEFT }
         );
       else if (type === "minLength")
         toast.error(
           <Flash delay={1000} duration={2000}>
             <h5 style={{ color: "red" }}>Username is more than 4 letters.</h5>
           </Flash>,
-          { position: toast.POSITION.TOP_CENTER }
+          { position: toast.POSITION.BOTTOM_LEFT }
         );
       else if (type === "pattern")
         toast.error(
@@ -25,7 +25,7 @@ const notify = (field, type) => {
               Wrong pattern! choose a better pattern.
             </h5>
           </Flash>,
-          { position: toast.POSITION.TOP_CENTER }
+          { position: toast.POSITION.BOTTOM_LEFT }
         );
       else if (type === "maxLength")
         toast.error(
@@ -35,7 +35,7 @@ const notify = (field, type) => {
               Maximum length is less than 30 letters.
             </h5>
           </Flash>,
-          { position: toast.POSITION.TOP_CENTER }
+          { position: toast.POSITION.BOTTOM_LEFT }
         );
       break;
     case "email":
@@ -44,14 +44,14 @@ const notify = (field, type) => {
           <Flash delay={1000} duration={2000}>
             <h5 style={{ color: "red" }}>Email is required</h5>
           </Flash>,
-          { position: toast.POSITION.TOP_CENTER }
+          { position: toast.POSITION.BOTTOM_LEFT }
         );
       else if (type === "maxLength")
         toast(
           <Flash delay={1000} duration={2000}>
             <h5 style={{ color: "red" }}>Email is less than 50 letters.</h5>
           </Flash>,
-          { position: toast.POSITION.TOP_CENTER }
+          { position: toast.POSITION.BOTTOM_LEFT }
         );
       else if (type === "pattern")
         toast(
@@ -60,7 +60,7 @@ const notify = (field, type) => {
               Wrong pattern! choose a better pattern.
             </h5>
           </Flash>,
-          { position: toast.POSITION.TOP_CENTER }
+          { position: toast.POSITION.BOTTOM_LEFT }
         );
       break;
     case "password":
@@ -69,14 +69,14 @@ const notify = (field, type) => {
           <Flash delay={1000} duration={2000}>
             <h5 style={{ color: "red" }}>password is required.</h5>
           </Flash>,
-          { position: toast.POSITION.TOP_CENTER }
+          { position: toast.POSITION.BOTTOM_LEFT }
         );
       else if (type === "minLength")
         toast(
           <Flash delay={1000} duration={2000}>
             <h5 style={{ color: "red" }}>password is more than 6 letters.</h5>
           </Flash>,
-          { position: toast.POSITION.TOP_CENTER }
+          { position: toast.POSITION.BOTTOM_LEFT }
         );
       break;
     default:

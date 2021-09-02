@@ -45,6 +45,7 @@
   "devDependencies": {
     "axios": "^0.21.1",
     "react-reveal": "^1.2.2",
+    "react-tooltip": "^4.2.21",
     "timeago.js": "^4.0.2"
   }
 }
