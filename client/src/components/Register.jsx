@@ -72,7 +72,7 @@ function Register({ registerHandlerCb, setOpen }) {
           Register
         </Button>
       </form>
-      <ToastContainer />
+      <ToastContainer autoClose={3000} />
     </div>
   );
 }

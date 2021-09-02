@@ -2,7 +2,8 @@ import { TextField, Button } from "@material-ui/core";
 import React from "react";
 import { Room as RoomIcon, CloseSharp } from "@material-ui/icons";
 import { useForm } from "react-hook-form";
-import Flash from "react-reveal/Flash";
+import notify from "./utils/notify";
+import { ToastContainer } from "react-toastify";
 
 function Login({ loginCb, setOpen }) {
   const {
@@ -30,16 +31,9 @@ function Login({ loginCb, setOpen }) {
             pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/gim,
           })}
         />
-        {errors.username?.type === "required" && (
-          <Flash>
-            <h5 style={{ color: "red" }}>Username is required</h5>
-          </Flash>
-        )}
-        {errors.username?.type === "minLength" && (
-          <Flash>
-            <h5 style={{ color: "red" }}>Username is more than 4 letters.</h5>
-          </Flash>
-        )}
+        {errors.username?.type === "required" && notify("username", "required")}
+        {errors.username?.type === "minLength" &&
+          notify("username", "minLength")}
         <TextField
           label="Password"
           id="password"
@@ -47,16 +41,9 @@ function Login({ loginCb, setOpen }) {
           variant="outlined"
           {...register("password", { required: true, minLength: 5 })}
         />
-        {errors.password?.type === "required" && (
-          <Flash>
-            <h5 style={{ color: "red" }}>Password is required</h5>
-          </Flash>
-        )}
-        {errors.password?.type === "minLength" && (
-          <Flash>
-            <h5 style={{ color: "red" }}>Password is more than 6 letters</h5>
-          </Flash>
-        )}
+        {errors.password?.type === "required" && notify("password", "required")}
+        {errors.password?.type === "minLength" &&
+          notify("password", "minLength")}
         <Button
           style={{
             background: "lightblue",
@@ -69,6 +56,7 @@ function Login({ loginCb, setOpen }) {
           Login
         </Button>
       </form>
+      <ToastContainer autoClose={3000} />
     </div>
   );
 }
