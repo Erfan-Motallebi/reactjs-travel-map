@@ -98,6 +98,14 @@ hr {
   gap: 50px;
 }
 
+.delete-btn {
+  margin-top: 10px !important;
+  border: 1px solid rgb(219, 56, 56) !important;
+  background-color: rgb(219, 56, 56) !important;
+  color: #000 !important;
+  font-weight: 700 !important;
+}
+
 /* ToolTip CSS Extending */
 
 .tooltip {

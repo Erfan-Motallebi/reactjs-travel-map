@@ -5,6 +5,7 @@ import RoomRoundedIcon from "@material-ui/icons/RoomRounded";
 import axios from "axios";
 import Zoom from "react-reveal/Zoom";
 import Fade from "react-reveal/Fade";
+import Bounce from "react-reveal/Bounce";
 import { format } from "timeago.js";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -51,7 +52,7 @@ export default function TravelApp() {
   const [newPlace, setNewPlace] = useState(null);
   const [newPlaceInfo, setNewPlaceInfo] = useState({});
   // eslint-disable-next-line no-unused-vars
-  const [currentUser, setCurrentUser] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
 
   const [viewport, setViewport] = useState({
     width: "100vw",
@@ -114,8 +115,14 @@ export default function TravelApp() {
         },
         data: JSON.stringify(user),
       });
-      setCurrentUser([...currentUser, await userInfo.data]);
+      setCurrentUser(await userInfo.data);
       setOpenState({ ...openState, login: false });
+      toast.success(
+        <Bounce>
+          <h5>Successfully logged in.</h5>
+        </Bounce>,
+        { position: toast.POSITION.TOP_CENTER }
+      );
     } catch ({
       response: {
         data: { error },
@@ -126,6 +133,17 @@ export default function TravelApp() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const logOut = () => {
+    console.log("logged out");
+    setCurrentUser({});
+    toast.success(
+      <Bounce duration={1000} delay={500}>
+        <h5>You logged out</h5>
+      </Bounce>,
+      { position: toast.POSITION.TOP_CENTER }
+    );
+  };
+
   return (
     <Fragment>
       <div>
@@ -133,13 +151,14 @@ export default function TravelApp() {
           <Toolbar className={classes.toolBar}>
             <Typography variant="h5">React Travel App</Typography>
             <div style={{ flexBasic: 10 }}>
-              {currentUser.length > 0 ? (
+              {currentUser.username ? (
                 <Button
                   style={{
                     background: "red",
                     color: "#fff",
                     fontWeight: 700,
                   }}
+                  onClick={logOut}
                 >
                   Logout
                 </Button>
@@ -214,7 +233,8 @@ export default function TravelApp() {
                     onClick={() => markerHandleClick(id, lat, long)}
                     style={{
                       fontSize: viewport.zoom * 6,
-                      color: username === currentUser ? "red" : "purple",
+                      color:
+                        username === currentUser.username ? "red" : "purple",
                       cursor: "pointer",
                     }}
                   />
@@ -265,6 +285,9 @@ export default function TravelApp() {
                         {format(createdAt)}
                       </label>
                     </div>
+                    <Button fullWidth color="secondary" className="delete-btn">
+                      Delete
+                    </Button>
                   </Popup>
                 )}
               </div>
