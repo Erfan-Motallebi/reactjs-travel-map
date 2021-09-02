@@ -8,6 +8,7 @@ import Fade from "react-reveal/Fade";
 import Bounce from "react-reveal/Bounce";
 import { format } from "timeago.js";
 import { ToastContainer, toast } from "react-toastify";
+import { useQueryClient } from "react-query";
 
 import {
   TextField,
@@ -25,6 +26,7 @@ import { Star, Send } from "@material-ui/icons";
 import Register from "./Register";
 import Login from "./Login";
 import { useQuery } from "react-query";
+import DeleteBtn from "./DeleteBtn";
 
 const useStyles = makeStyles({
   toolBar: {
@@ -34,8 +36,9 @@ const useStyles = makeStyles({
 });
 
 export default function TravelApp() {
+  const queryClient = useQueryClient();
   const classes = useStyles();
-  const { isLoading, data, isError } = useQuery("allPins", async () => {
+  const { isLoading, isError, data } = useQuery("allPins", async () => {
     const { data } = await axios.get("api/pins");
     return data;
   });
@@ -78,13 +81,14 @@ export default function TravelApp() {
     });
   };
 
-  const formSubmitHandle = (e) => {
+  const formSubmitHandle = async (e) => {
     e.preventDefault();
-    axios.post("api/pin", {
+    await axios.post("api/pin", {
       ...newPlaceInfo,
       lat: newPlace.lat,
       long: newPlace.long,
     });
+    queryClient.setQueryData("allPins");
   };
 
   const registerHandlerCb = useCallback(
@@ -134,7 +138,6 @@ export default function TravelApp() {
   }, []);
 
   const logOut = () => {
-    console.log("logged out");
     setCurrentUser({});
     toast.success(
       <Bounce duration={1000} delay={500}>
@@ -285,9 +288,7 @@ export default function TravelApp() {
                         {format(createdAt)}
                       </label>
                     </div>
-                    <Button fullWidth color="secondary" className="delete-btn">
-                      Delete
-                    </Button>
+                    <DeleteBtn pinId={id} />
                   </Popup>
                 )}
               </div>

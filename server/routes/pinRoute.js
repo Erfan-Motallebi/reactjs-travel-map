@@ -19,4 +19,16 @@ Router.get("/pins", async (req, res) => {
   }
 });
 
+Router.delete("/pin", async (req, res) => {
+  const { pinId } = req.query;
+  try {
+    const removedPin = await Pin.findByIdAndRemove(pinId);
+    res.status(200).json(removedPin);
+  } catch (error) {
+    res.status(404).json({
+      msg: "Failed to remove the proper pin",
+    });
+  }
+});
+
 module.exports = Router;
