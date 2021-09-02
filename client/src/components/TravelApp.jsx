@@ -50,7 +50,7 @@ export default function TravelApp() {
   const [newPlace, setNewPlace] = useState(null);
   const [newPlaceInfo, setNewPlaceInfo] = useState({});
   // eslint-disable-next-line no-unused-vars
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState([]);
 
   const [viewport, setViewport] = useState({
     width: "100vw",
@@ -88,7 +88,7 @@ export default function TravelApp() {
   const registerHandlerCb = useCallback(
     async (registerValues) => {
       try {
-        await axios.post("user/register", registerValues, {
+        await axios.post("user/register", JSON.stringify(registerValues), {
           headers: { "Content-Type": "application/json" },
         });
         setOpenState({ ...openState, register: false });
@@ -106,8 +106,15 @@ export default function TravelApp() {
   const loginCb = useCallback(
     async (user) => {
       try {
-        const userInfo = await axios.get("user/login", user);
-        setCurrentUser(await userInfo.data);
+        const userInfo = await axios.request({
+          url: "user/login",
+          method: "POST",
+          headers: {
+            "Content-Type": "Application/json",
+          },
+          data: JSON.stringify(user),
+        });
+        setCurrentUser([...currentUser, await userInfo.data]);
         setOpenState({ ...openState, login: false });
       } catch ({
         response: {
@@ -117,7 +124,7 @@ export default function TravelApp() {
         setError({ type: "LoginError", errorMessage: error.msg });
       }
     },
-    [openState]
+    [currentUser, openState]
   );
 
   return (
@@ -127,7 +134,7 @@ export default function TravelApp() {
           <Toolbar className={classes.toolBar}>
             <Typography variant="h5">React Travel App</Typography>
             <div style={{ flexBasic: 10 }}>
-              {currentUser && currentUser.length > 0 ? (
+              {currentUser.length > 0 ? (
                 <Button
                   style={{
                     background: "red",
